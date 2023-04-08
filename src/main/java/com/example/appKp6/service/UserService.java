@@ -24,13 +24,15 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User loginEml(LoginDTO loginDTO){
+    public User loginUser(LoginDTO loginDTO){
+
         User user = null;
         try{
-            user = userRepo.findByEmail(loginDTO.getEmail());
+            user = userRepo.findByName(loginDTO.getUsername());
         }catch (Exception e){
             e.printStackTrace();
         }
+
         String pass = loginDTO.getPassword();
         if(user != null && passwordEncoder.matches(pass, user.getPassword())){
             return user;
@@ -39,8 +41,8 @@ public class UserService {
     }
 
     public User createEmployee(User user){
-        String email = user.getEmail();
-        if(userRepo.findByEmail(email) != null){
+        String userName = user.getName();
+        if(userRepo.findByName(userName) != null){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "user exist!");
         }
 

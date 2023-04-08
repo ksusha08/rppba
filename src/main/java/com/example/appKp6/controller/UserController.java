@@ -28,7 +28,8 @@ public class UserController {
 
     @PostMapping("/loginuser")
     public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO){
-        User user = userService.loginEml(loginDTO);
+
+        User user = userService.loginUser(loginDTO);
 
         if(user == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

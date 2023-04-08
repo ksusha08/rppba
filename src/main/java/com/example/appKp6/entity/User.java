@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
+// можно использовать аннотацию @Builder из библиотеки lombook для патерна билдер
 @Entity
 @Table(name="employee")
 public class User implements UserDetails {
