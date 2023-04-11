@@ -51,9 +51,14 @@ public class UserController {
     User updateUser(@RequestBody User newUser, @PathVariable Long id){
 
         return userRepo.findById(id).map(user -> {
-            user.setName(newUser.getName());
+            user.setUsername(newUser.getUsername());
             user.setEmail(newUser.getEmail());
             user.setPassword(newUser.getPassword());
+
+            user.setName(newUser.getName());
+            user.setSurname(newUser.getSurname());
+            user.setPatronymic(newUser.getPatronymic());
+
             return userRepo.save(user);
         }).orElseThrow(()->new UserNotFoundException(id));
     }

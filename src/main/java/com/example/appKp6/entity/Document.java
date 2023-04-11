@@ -19,10 +19,10 @@ public class Document {
     private Date date;
 
     @Column(name = "status")
-    private int status;
+    private String status;
 
     @Column(name = "type")
-    private int type;
+    private String type;
 
     @Column(name = "id_user")
     private int id_user;
@@ -34,7 +34,7 @@ public class Document {
 
     }
 
-    public Document(Long id, int number, Date date, int status, int type, int id_user, int id_provider) {
+    public Document(Long id, int number, Date date, String status, String type, int id_user, int id_provider) {
         this.id = id;
         this.number = number;
         this.date = date;
@@ -68,19 +68,19 @@ public class Document {
         this.date = date;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

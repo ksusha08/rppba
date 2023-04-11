@@ -18,14 +18,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 255)
-    private String name;
+    @Column(name = "username", length = 255)
+    private String username;
 
     @Column(name = "email", length = 255)
     private String email;
 
     @Column(name = "password", length = 255)
     private String password;
+
+    @Column(name = "name", length = 255)
+    private String name;
+
+    @Column(name = "surname", length = 255)
+    private String surname;
+
+    @Column(name = "patronymic", length = 255)
+    private String patronymic;
 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -38,12 +47,39 @@ public class User implements UserDetails {
     public User() {
     }
 
-
-    public User(Long id, String name, String email, String password) {
+    public User(Long id, String username, String email, String password, String name, String surname, String patronymic, Set<Role> roles) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.roles = roles;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
     }
 
     public Long getId() {
@@ -54,12 +90,12 @@ public class User implements UserDetails {
         this.id = employeeid;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String employeename) {
-        this.name = employeename;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -79,10 +115,10 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override
+    /*@Override
     public String getUsername() {
         return null;
-    }
+    }*/
 
     @Override
     public boolean isAccountNonExpired() {
