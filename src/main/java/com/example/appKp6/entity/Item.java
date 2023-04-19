@@ -1,5 +1,9 @@
 package com.example.appKp6.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
@@ -23,15 +27,20 @@ public class Item {
     @Column(name = "discount_price")
     private Double discountPrice;
 
+    @Column(name = "photos", length = 64)
+    private String photos;
+
+
     public Item(){
     }
 
-    public Item(Long id, String name, String vendoreCode, String description, Double discountPrice) {
+    public Item(Long id, String name, String vendoreCode, String description, Double discountPrice, String photos) {
         this.id = id;
         this.name = name;
         this.vendoreCode = vendoreCode;
         this.description = description;
         this.discountPrice = discountPrice;
+        this.photos = photos;
     }
 
     public Long getId() {
@@ -40,6 +49,21 @@ public class Item {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPhotos() {
+        return photos;
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (photos == null || id == null) return null;
+
+        return "/user-photos/" + id + "/" + photos;
+    }
+
+    public void setPhotos(String photos) {
+        this.photos = photos;
     }
 
     public String getName() {

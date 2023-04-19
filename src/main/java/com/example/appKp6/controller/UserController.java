@@ -4,7 +4,7 @@ import com.example.appKp6.dto.LoginDTO;
 import com.example.appKp6.entity.User;
 import com.example.appKp6.exception.UserNotFoundException;
 import com.example.appKp6.repo.UserRepo;
-import com.example.appKp6.service.UserService;
+import com.example.appKp6.service.map.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +17,18 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepo userRepo;
+    private UserServiceImpl userServiceImpl;
+
 
     @PostMapping("/user")
     User newUser(@RequestBody User newUser){
-        return userService.createEmployee(newUser);
+        return userServiceImpl.createEmployee(newUser);
     }
 
     @PostMapping("/loginuser")
     public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO){
 
-        User user = userService.loginUser(loginDTO);
+        User user = userServiceImpl.loginUser(loginDTO);
 
         if(user == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -39,38 +38,24 @@ public class UserController {
 
     @GetMapping("/users")
     List<User> getAllUsers(){
-        return userRepo.findAll();
+        return userServiceImpl.findAll();
     }
 
     @GetMapping("/user/{id}")
     User getUserById(@PathVariable Long id){
-        return userRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        return userServiceImpl.findById(id);
     }
 
     @PutMapping("/user/{id}")
-    User updateUser(@RequestBody User newUser, @PathVariable Long id){
+    User updateUser(@RequestBody User newUser, @PathVariable Long id ){
 
-        return userRepo.findById(id).map(user -> {
-            user.setUsername(newUser.getUsername());
-            user.setEmail(newUser.getEmail());
-            user.setPassword(newUser.getPassword());
-
-            user.setName(newUser.getName());
-            user.setSurname(newUser.getSurname());
-            user.setPatronymic(newUser.getPatronymic());
-
-            return userRepo.save(user);
-        }).orElseThrow(()->new UserNotFoundException(id));
+        return userServiceImpl.update(newUser,id);
     }
 
     @DeleteMapping("/user/{id}")
     String deleteUser(@PathVariable Long id){
-        if(!userRepo.existsById(id)){
-            throw  new UserNotFoundException(id);
-        }
-        userRepo.deleteById(id);
+        userServiceImpl.deleteById(id);
         return  "User with id "+id+" has been deleted success";
-
     }
 
 }

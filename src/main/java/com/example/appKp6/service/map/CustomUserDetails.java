@@ -1,4 +1,4 @@
-package com.example.appKp6.service;
+package com.example.appKp6.service.map;
 
 import com.example.appKp6.entity.User;
 import com.example.appKp6.repo.UserRepo;

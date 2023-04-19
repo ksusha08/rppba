@@ -1,6 +1,6 @@
 package com.example.appKp6.config;
 
-import com.example.appKp6.service.CustomUserDetails;
+import com.example.appKp6.service.map.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

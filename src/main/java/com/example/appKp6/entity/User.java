@@ -11,7 +11,7 @@ import java.util.Set;
 // можно использовать аннотацию @Builder из библиотеки lombook для патерна билдер
 @Entity
 @Table(name="employee")
-public class User implements UserDetails {
+public class User implements UserDetails{
 
     @Id
     @Column(name = "id", length = 45)
@@ -115,10 +115,6 @@ public class User implements UserDetails {
         return password;
     }
 
-    /*@Override
-    public String getUsername() {
-        return null;
-    }*/
 
     @Override
     public boolean isAccountNonExpired() {
