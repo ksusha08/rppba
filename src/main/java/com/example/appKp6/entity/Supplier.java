@@ -1,6 +1,8 @@
 package com.example.appKp6.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="suppliers")
@@ -19,6 +21,9 @@ public class Supplier {
 
     @Column(name = "address", length = 255)
     private String address;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier")
+    private Set<Document> documents = new HashSet<>();
 
     public Supplier() {
     }

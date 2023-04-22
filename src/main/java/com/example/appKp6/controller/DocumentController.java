@@ -2,13 +2,11 @@ package com.example.appKp6.controller;
 
 
 import com.example.appKp6.entity.Document;
-import com.example.appKp6.entity.Item;
-import com.example.appKp6.exception.DocumentNotFoundException;
-import com.example.appKp6.exception.SupplierNotFoundException;
-import com.example.appKp6.repo.DocumentRepo;
-import com.example.appKp6.repo.ItemRepo;
+import com.example.appKp6.entity.Supplier;
+import com.example.appKp6.entity.User;
 import com.example.appKp6.service.map.DocumentServiceImpl;
-import com.example.appKp6.service.map.ItemServiceImpl;
+import com.example.appKp6.service.map.SupplierServiceImpl;
+import com.example.appKp6.service.map.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +16,32 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 public class DocumentController {
 
+    @Autowired
     private final DocumentServiceImpl documentService;
 
-    public DocumentController(DocumentServiceImpl documentService) {
+    @Autowired
+    private final UserServiceImpl userService;
+
+    @Autowired
+    private final SupplierServiceImpl supplierService;
+
+    public DocumentController(DocumentServiceImpl documentService, UserServiceImpl userService, SupplierServiceImpl supplierService) {
+
         this.documentService = documentService;
+        this.userService = userService;
+        this.supplierService = supplierService;
     }
 
 
-    @PostMapping("/document")
-    Document newDocument(@RequestBody Document newDocument){
+    @PostMapping("/document/{userId}/{supplierId}")
+    Document newDocument(@RequestBody Document newDocument, @PathVariable Long userId,@PathVariable Long supplierId){
+
+        Supplier supplier = supplierService.findById(supplierId);
+        newDocument.setSupplier(supplier);
+
+        User user = userService.findById(userId);
+        newDocument.setUser(user);
+
         return documentService.save(newDocument);
     }
 
@@ -40,10 +55,12 @@ public class DocumentController {
         return documentService.findById(id);
     }
 
-    @PutMapping("/document/{id}")
-    Document updateDocument(@RequestBody Document newDocument,@PathVariable Long id){
-        return documentService.update(newDocument,id);
+    @PutMapping("/document/{id}/{supplierId}")
+    Document updateDocument(@RequestBody Document newDocument,@PathVariable Long id,@PathVariable(required = false) Long supplierId){
+
+        return documentService.update(newDocument,id,supplierId);
     }
+
 
     @DeleteMapping("/document/{id}")
     String deleteDocument(@PathVariable Long id){
@@ -52,4 +69,5 @@ public class DocumentController {
 
     }
 }
+
 

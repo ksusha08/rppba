@@ -54,6 +54,8 @@ public class ItemServiceImpl implements ItemService {
             item.setVendoreCode(newItem.getVendoreCode());
             item.setDescription(newItem.getDescription());
             item.setDiscountPrice(newItem.getDiscountPrice());
+            item.setNumber(newItem.getNumber());
+            item.setPhotos(newItem.getPhotos());
 
             return itemRepo.save(item);
         }).orElseThrow(()->new ItemNotFoundException(id));

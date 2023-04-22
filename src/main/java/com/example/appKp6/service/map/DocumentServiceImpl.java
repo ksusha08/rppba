@@ -1,11 +1,9 @@
 package com.example.appKp6.service.map;
 
 import com.example.appKp6.entity.Document;
-import com.example.appKp6.entity.Item;
+import com.example.appKp6.entity.Supplier;
 import com.example.appKp6.exception.DocumentNotFoundException;
-import com.example.appKp6.exception.ItemNotFoundException;
 import com.example.appKp6.repo.DocumentRepo;
-import com.example.appKp6.repo.ItemRepo;
 import com.example.appKp6.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,12 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private DocumentRepo documentRepo;
 
+    @Autowired
+    private final SupplierServiceImpl supplierService;
+
+    public DocumentServiceImpl(SupplierServiceImpl supplierService) {
+        this.supplierService = supplierService;
+    }
 
     @Override
     public List<Document> findAll() {
@@ -47,16 +51,21 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
 
-    public Document update(Document newDocument, Long id){
+    public Document update(Document newDocument, Long id,Long supplierId ){
 
         return documentRepo.findById(id).map(document -> {
             document.setNumber(newDocument.getNumber());
             document.setDate(newDocument.getDate());
-            document.setStatus(newDocument.getStatus());
             document.setType(newDocument.getType());
-            document.setId_user(newDocument.getId_user());
-            document.setId_provider(newDocument.getId_provider());
+
+            if(supplierId != null) {
+                Supplier supplier = supplierService.findById(supplierId);
+                document.setSupplier(supplier);
+            }
             return documentRepo.save(document);
         }).orElseThrow(()->new DocumentNotFoundException(id));
     }
+
+
+
 }

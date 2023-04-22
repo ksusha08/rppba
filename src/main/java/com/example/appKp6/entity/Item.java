@@ -30,17 +30,22 @@ public class Item {
     @Column(name = "photos", length = 64)
     private String photos;
 
+    @Column(name = "number", length = 64)
+    private int number;
+
 
     public Item(){
     }
 
-    public Item(Long id, String name, String vendoreCode, String description, Double discountPrice, String photos) {
+
+    public Item(Long id, String name, String vendoreCode, String description, Double discountPrice, String photos, int number) {
         this.id = id;
         this.name = name;
         this.vendoreCode = vendoreCode;
         this.description = description;
         this.discountPrice = discountPrice;
         this.photos = photos;
+        this.number = number;
     }
 
     public Long getId() {
@@ -96,5 +101,13 @@ public class Item {
 
     public void setDiscountPrice(Double discountPrice) {
         this.discountPrice = discountPrice;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

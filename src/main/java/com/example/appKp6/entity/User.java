@@ -36,6 +36,10 @@ public class User implements UserDetails{
     @Column(name = "patronymic", length = 255)
     private String patronymic;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Document> documents = new HashSet<>();
+
+
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "employee_id"))

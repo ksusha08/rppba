@@ -24,24 +24,40 @@ public class Document {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "id_user")
-    private int id_user;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
-    @Column(name = "id_provider")
-    private int id_provider;
+    @ManyToOne
+    @JoinColumn(name = "id_provider")
+    private Supplier supplier;
 
     public Document(){
 
     }
 
-    public Document(Long id, int number, Date date, String status, String type, int id_user, int id_provider) {
+    public Document(Long id, int number, Date date, String status, String type) {
         this.id = id;
         this.number = number;
         this.date = date;
         this.status = status;
         this.type = type;
-        this.id_user = id_user;
-        this.id_provider = id_provider;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -84,19 +100,4 @@ public class Document {
         this.type = type;
     }
 
-    public int getId_user() {
-        return id_user;
-    }
-
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
-    }
-
-    public int getId_provider() {
-        return id_provider;
-    }
-
-    public void setId_provider(int id_provider) {
-        this.id_provider = id_provider;
-    }
 }

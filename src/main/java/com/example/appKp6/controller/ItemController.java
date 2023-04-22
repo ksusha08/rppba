@@ -25,27 +25,19 @@ public class ItemController {
 
 
     @PostMapping(value = "/item", consumes = { "multipart/form-data" })
-    public Item newItem(@RequestParam("photos") MultipartFile file,
-                        @RequestParam("name") String name,
-                        @RequestParam("vendoreCode") String vendoreCode,
-                        @RequestParam("description") String description,
-                        @RequestParam("discountPrice") Double discountPrice) throws IOException {
-
-        Item newItem = new Item();
-        newItem.setName(name);
-        newItem.setVendoreCode(vendoreCode);
-        newItem.setDescription(description);
-        newItem.setDiscountPrice(discountPrice);
-
+    public Item newItem(@RequestPart("photos") MultipartFile file,
+                        @RequestPart("item") Item item) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        newItem.setPhotos(fileName);
+        item.setPhotos(fileName);
 
-        Item savedItem = itemService.save(newItem);
+        Item savedItem = itemService.save(item);
 
         String uploadDir = "user-photos/" + savedItem.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, file);
+
         return savedItem;
     }
+
 
     @GetMapping("/items")
     List<Item> getAllItems(){
@@ -57,29 +49,20 @@ public class ItemController {
         return itemService.findById(id);
     }
 
-    @PutMapping(value = "/item/{id}", consumes = {"multipart/form-data"})
+    @PutMapping(value = "/item/{id}", consumes = { "multipart/form-data" })
     public Item updateItem(@PathVariable Long id,
-                           @RequestParam(name = "photos", required = false) MultipartFile file,
-                           @RequestParam(name = "name") String name,
-                           @RequestParam(name = "vendoreCode") String vendoreCode,
-                           @RequestParam(name = "description") String description,
-                           @RequestParam(name = "discountPrice") Double discountPrice) throws IOException {
-
-        Item itemToUpdate = itemService.findById(id);
-
-        itemToUpdate.setName(name);
-        itemToUpdate.setVendoreCode(vendoreCode);
-        itemToUpdate.setDescription(description);
-        itemToUpdate.setDiscountPrice(discountPrice);
+                        @RequestPart(name = "photos", required = false) MultipartFile file,
+                        @RequestPart("item") Item item) throws IOException {
 
         if (file != null && !file.isEmpty()) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            itemToUpdate.setPhotos(fileName);
+            item.setPhotos(fileName);
+            System.out.println("фото");
             String uploadDir = "user-photos/" + id;
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         }
 
-        Item updatedItem = itemService.update(itemToUpdate, id);
+        Item updatedItem = itemService.update(item, id);
 
         return updatedItem;
     }
