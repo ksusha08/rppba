@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="items")
@@ -32,6 +34,9 @@ public class Item {
 
     @Column(name = "number", length = 64)
     private int number;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    private Set<DocumentInfo> documentInfo = new HashSet<>();
 
 
     public Item(){

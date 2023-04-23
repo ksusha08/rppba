@@ -2,6 +2,8 @@ package com.example.appKp6.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="document")
@@ -31,6 +33,9 @@ public class Document {
     @ManyToOne
     @JoinColumn(name = "id_provider")
     private Supplier supplier;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
+    private Set<DocumentInfo> documentInfo = new HashSet<>();
 
     public Document(){
 
