@@ -67,6 +67,16 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
 
+    public Document updateStatus(Document newDocument, Long id){
+
+        return documentRepo.findById(id).map(document -> {
+
+            document.setStatus(newDocument.getStatus());
+
+
+            return documentRepo.save(document);
+        }).orElseThrow(()->new DocumentNotFoundException(id));
+    }
 
 
 }

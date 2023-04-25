@@ -52,6 +52,7 @@ public class SupplierServiceImpl implements SupplierService {
             supplier.setName(newSupplier.getName());
             supplier.setEmail(newSupplier.getEmail());
             supplier.setAddress(newSupplier.getAddress());
+            supplier.setCoefficient(newSupplier.getCoefficient());
             return supplierRepo.save(supplier);
         }).orElseThrow(()->new SupplierNotFoundException(id));
     }

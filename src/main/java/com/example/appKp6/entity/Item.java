@@ -38,6 +38,9 @@ public class Item {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     private Set<DocumentInfo> documentInfo = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    private Set<Income> income = new HashSet<>();
+
 
     public Item(){
     }

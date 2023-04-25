@@ -1,9 +1,7 @@
 package com.example.appKp6.service.map;
 
-import com.example.appKp6.entity.Document;
 import com.example.appKp6.entity.DocumentInfo;
 import com.example.appKp6.entity.Item;
-import com.example.appKp6.entity.Supplier;
 import com.example.appKp6.exception.DocumentNotFoundException;
 import com.example.appKp6.repo.DocumentInfoRepo;
 import com.example.appKp6.service.DocumentInfoService;
@@ -53,12 +51,34 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
     }
 
     @Override
-    public void delete(DocumentInfo object) {
-        documentInfoRepo.delete(object);
+    public void delete(DocumentInfo documentInfo) {
+
+        Item item = documentInfo.getItem();
+        Long id = item.getId();
+
+        int newNumber = item.getNumber() + documentInfo.getAmount();
+        item.setNumber(newNumber);
+
+        itemService.update(item,id);
+
+        documentInfoRepo.delete(documentInfo);
     }
 
     @Override
     public void deleteById(Long aLong) {
+
+        DocumentInfo documentInfo = findById(aLong);
+
+        Item item = documentInfo.getItem();
+        Long id = item.getId();
+
+        int newNumber = item.getNumber() + documentInfo.getAmount();
+        item.setNumber(newNumber);
+
+        itemService.update(item,id);
+
+
+
         documentInfoRepo.deleteById(aLong);
     }
 
@@ -69,7 +89,7 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
 
             documentInfo.setAmount(newDocumentInfo.getAmount());
             documentInfo.setItem(newDocumentInfo.getItem());
-            documentInfo.setPrice(newDocumentInfo.getPrice());
+            documentInfo.setSumm(newDocumentInfo.getSumm());
 
             if(itemId != null) {
                 Item item = itemService.findById(itemId);

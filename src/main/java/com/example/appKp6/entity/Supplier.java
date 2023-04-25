@@ -22,17 +22,21 @@ public class Supplier {
     @Column(name = "address", length = 255)
     private String address;
 
+    @Column(name = "coefficient")
+    private Double coefficient;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier")
     private Set<Document> documents = new HashSet<>();
 
     public Supplier() {
     }
 
-    public Supplier(Long id, String name, String email, String address) {
+    public Supplier(Long id, String name, String email, String address, Double coefficient) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.address = address;
+        this.coefficient = coefficient;
     }
 
     public Long getId() {
@@ -65,5 +69,13 @@ public class Supplier {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Double getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(Double coefficient) {
+        this.coefficient = coefficient;
     }
 }

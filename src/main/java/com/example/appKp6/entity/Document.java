@@ -37,6 +37,10 @@ public class Document {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
     private Set<DocumentInfo> documentInfo = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
+    private Set<Income> income = new HashSet<>();
+
+
     public Document(){
 
     }
