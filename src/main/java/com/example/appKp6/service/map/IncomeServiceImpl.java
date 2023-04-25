@@ -94,6 +94,23 @@ public class IncomeServiceImpl implements IncomeService {
 
     }
 
+    public void deleteIncome(Long docId) {
+
+        Document document = documentServiceImpl.findById(docId);
+
+        List<Income> incomeList = incomeRepo.findByDocumentId(docId);
+
+        for(int i =0; i<incomeList.size();i++){
+
+            Long incomeId = incomeList.get(i).getId();
+            incomeRepo.deleteById(incomeId);
+
+        }
+
+        document.setStatus("не проведен");
+        documentServiceImpl.updateStatus(document,document.getId());
+    }
+
     @Override
     public void delete(Income object) {
         incomeRepo.delete(object);

@@ -30,10 +30,10 @@ public class IncomeController {
 
 
     @PostMapping("/income/{id}/")
-    void newIncome( @PathVariable Long id){
+    String newIncome( @PathVariable Long id){
 
         incomeService.addIncome(id);
-
+        return  "Income for document with id "+id+" has been added";
     }
 
 
@@ -58,7 +58,7 @@ public class IncomeController {
 
     @DeleteMapping("/income/{id}")
     String deleteDocument(@PathVariable Long id){
-        incomeService.deleteById(id);
+        incomeService.deleteIncome(id);
         return  "DocumentInfo with id "+id+" has been deleted success";
 
     }
