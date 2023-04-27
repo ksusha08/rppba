@@ -74,6 +74,12 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    public List<User> findByStatus(String status) {
+        List<User> users = userRepo.findByStatus(status);
+        return users;
+    }
+
+
     @Override
     public User findById(Long aLong) {
         return userRepo.findById(aLong).orElseThrow(()->new UserNotFoundException(aLong));
@@ -117,6 +123,7 @@ public class UserServiceImpl implements UserService {
             user.setName(newUser.getName());
             user.setSurname(newUser.getSurname());
             user.setPatronymic(newUser.getPatronymic());
+            user.setStatus(newUser.getStatus());
 
             return userRepo.save(user);
         }).orElseThrow(()->new UserNotFoundException(id));

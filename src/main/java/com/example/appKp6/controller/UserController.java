@@ -47,6 +47,21 @@ public class UserController {
         return userServiceImpl.findAll();
     }
 
+    @GetMapping("/activeusers")
+    List<User> getAllActiveUsers(){
+        return userServiceImpl.findByStatus("активен");
+    }
+
+    @GetMapping("/applications")
+    List<User> getAllApplicationd(){
+        return userServiceImpl.findByStatus("заявка");
+    }
+
+    @GetMapping("/blacklist")
+    List<User> getBlackList(){
+        return userServiceImpl.findByStatus("заблокирован");
+    }
+
     @GetMapping("/user/{id}")
     User getUserById(@PathVariable Long id){
         return userServiceImpl.findById(id);
