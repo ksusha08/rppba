@@ -26,9 +26,19 @@ public class Document {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "coefficient")
+    private double  coefficient;
+
+    @Column(name = "summ")
+    private double  summ;
+
+    @Column(name = "amount")
+    private int  amount;
+
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
+
 
     @ManyToOne
     @JoinColumn(name = "id_provider")
@@ -45,12 +55,15 @@ public class Document {
 
     }
 
-    public Document(Long id, int number, Date date, String status, String type) {
+    public Document(Long id, int number, Date date, String status, String type, double coefficient, User user, Supplier supplier) {
         this.id = id;
         this.number = number;
         this.date = date;
         this.status = status;
         this.type = type;
+        this.coefficient = coefficient;
+        this.user = user;
+        this.supplier = supplier;
     }
 
     public Supplier getSupplier() {
@@ -107,6 +120,30 @@ public class Document {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public double getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(double coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    public double getSumm() {
+        return summ;
+    }
+
+    public void setSumm(double summ) {
+        this.summ = summ;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
 }

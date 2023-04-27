@@ -1,6 +1,7 @@
 package com.example.appKp6.service.map;
 
 import com.example.appKp6.entity.Document;
+import com.example.appKp6.entity.DocumentInfo;
 import com.example.appKp6.entity.Supplier;
 import com.example.appKp6.exception.DocumentNotFoundException;
 import com.example.appKp6.repo.DocumentRepo;
@@ -18,6 +19,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     private final SupplierServiceImpl supplierService;
+
 
     public DocumentServiceImpl(SupplierServiceImpl supplierService) {
         this.supplierService = supplierService;
@@ -37,6 +39,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document save(Document object) {
+
+        object.setAmount(0);
+        object.setSumm(0.0);
+
         return documentRepo.save(object);
     }
 
@@ -57,6 +63,9 @@ public class DocumentServiceImpl implements DocumentService {
             document.setNumber(newDocument.getNumber());
             document.setDate(newDocument.getDate());
             document.setType(newDocument.getType());
+            document.setSumm(newDocument.getSumm());
+            document.setAmount(newDocument.getAmount());
+            document.setCoefficient(newDocument.getCoefficient());
 
             if(supplierId != null) {
                 Supplier supplier = supplierService.findById(supplierId);
@@ -78,5 +87,27 @@ public class DocumentServiceImpl implements DocumentService {
         }).orElseThrow(()->new DocumentNotFoundException(id));
     }
 
+    public Document updateSummAndAmount(Document newDocument, Long id, List<DocumentInfo> docInfo){
+
+        double summ = 0;
+        int amount = 0;
+
+        for(int i = 0; i<docInfo.size();i++){
+            amount = amount+docInfo.get(i).getAmount();
+            summ = summ + docInfo.get(i).getSumm();
+        }
+
+        newDocument.setAmount(amount);
+        newDocument.setSumm(summ);
+
+        return documentRepo.findById(id).map(document -> {
+
+            document.setAmount(newDocument.getAmount());
+            document.setSumm(newDocument.getSumm());
+
+
+            return documentRepo.save(document);
+        }).orElseThrow(()->new DocumentNotFoundException(id));
+    }
 
 }

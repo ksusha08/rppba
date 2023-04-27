@@ -36,6 +36,9 @@ public class User implements UserDetails{
     @Column(name = "patronymic", length = 255)
     private String patronymic;
 
+    @Column(name = "status", length = 255)
+    private String status;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Document> documents = new HashSet<>();
 
@@ -109,6 +112,15 @@ public class User implements UserDetails{
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

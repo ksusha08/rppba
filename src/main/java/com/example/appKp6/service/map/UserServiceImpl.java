@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
 
     public User createEmployee(User user){
         String userName = user.getUsername();
+
         if(userRepo.findByUsername(userName) != null){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "user exist!");
         }
@@ -80,7 +81,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User object) {
-        return userRepo.save(object);
+
+
+        User user = null;
+
+        try{
+            user = userRepo.findByUsername(object.getUsername());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        if(user == null){
+            return userRepo.save(object);
+        }
+        return null;
     }
 
     @Override

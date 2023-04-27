@@ -21,8 +21,14 @@ public class UserController {
 
 
     @PostMapping("/user")
-    User newUser(@RequestBody User newUser){
-        return userServiceImpl.createEmployee(newUser);
+    public ResponseEntity<?> newUser(@RequestBody User newUser){
+
+        User user = userServiceImpl.createEmployee(newUser);
+
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/loginuser")

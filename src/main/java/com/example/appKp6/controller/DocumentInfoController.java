@@ -28,7 +28,7 @@ public class DocumentInfoController {
 
 
     @PostMapping("/documentInfo/{id}/{itemId}/")
-    DocumentInfo newDocumentInfo(@RequestBody DocumentInfo newDocumentInfo, @PathVariable Long id, @PathVariable Long itemId){
+    String newDocumentInfo(@RequestBody DocumentInfo newDocumentInfo, @PathVariable Long id, @PathVariable Long itemId){
 
         Document document = documentService.findById(id);
         newDocumentInfo.setDocument(document);
@@ -36,7 +36,9 @@ public class DocumentInfoController {
         Item item = itemService.findById(itemId);
         newDocumentInfo.setItem(item);
 
-        return documentInfoService.save(newDocumentInfo);
+        documentInfoService.saveDocInfo(newDocumentInfo);
+
+        return  "DocumentInfo has been added success";
     }
 
 

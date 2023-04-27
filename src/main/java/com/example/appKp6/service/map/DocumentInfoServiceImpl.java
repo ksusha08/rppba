@@ -1,5 +1,6 @@
 package com.example.appKp6.service.map;
 
+import com.example.appKp6.entity.Document;
 import com.example.appKp6.entity.DocumentInfo;
 import com.example.appKp6.entity.Item;
 import com.example.appKp6.exception.DocumentNotFoundException;
@@ -19,8 +20,12 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
     @Autowired
     private final ItemServiceImpl itemService;
 
-    public DocumentInfoServiceImpl(ItemServiceImpl itemService) {
+    @Autowired
+    private final DocumentServiceImpl documentService;
+
+    public DocumentInfoServiceImpl(ItemServiceImpl itemService, DocumentServiceImpl documentService) {
         this.itemService = itemService;
+        this.documentService = documentService;
     }
 
 
@@ -39,15 +44,25 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
     @Override
     public DocumentInfo save(DocumentInfo documentInfo) {
 
+        return documentInfoRepo.save(documentInfo);
+    }
+
+    public void saveDocInfo(DocumentInfo documentInfo) {
+
+        Document doc = documentInfo.getDocument();
+
         Item item = documentInfo.getItem();
         Long id = item.getId();
 
         int newNumber = item.getNumber() - documentInfo.getAmount();
         item.setNumber(newNumber);
-
         itemService.update(item,id);
 
-        return documentInfoRepo.save(documentInfo);
+        documentInfoRepo.save(documentInfo);
+
+        List<DocumentInfo> documentInfoList = findByDocumentId(doc.getId());
+        documentService.updateSummAndAmount(doc, doc.getId(), documentInfoList);
+
     }
 
     @Override
