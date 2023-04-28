@@ -72,6 +72,7 @@ public class DocumentServiceImpl implements DocumentService {
                 document.setSupplier(supplier);
             }
             return documentRepo.save(document);
+
         }).orElseThrow(()->new DocumentNotFoundException(id));
     }
 

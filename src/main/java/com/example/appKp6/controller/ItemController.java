@@ -27,6 +27,7 @@ public class ItemController {
     @PostMapping(value = "/item", consumes = { "multipart/form-data" })
     public Item newItem(@RequestPart("photos") MultipartFile file,
                         @RequestPart("item") Item item) throws IOException {
+
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         item.setPhotos(fileName);
 

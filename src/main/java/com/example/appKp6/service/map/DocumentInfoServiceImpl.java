@@ -118,4 +118,29 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
         return documentInfoRepo.findByDocumentId(documentId);
     }
 
+   /* public void reUpdatePrices(Long docId){
+
+        List<DocumentInfo> documentInfoList = findByDocumentId(docId);
+
+        for(int i = 0; i<documentInfoList.size() ;i++) {
+
+            documentInfoRepo.findById(documentInfoList.get(i).getId()).map(documentInfo -> {
+
+                documentInfo.setAmount(newDocumentInfo.getAmount());
+                documentInfo.setItem(newDocumentInfo.getItem());
+                documentInfo.setSumm(newDocumentInfo.getSumm());
+
+                if (itemId != null) {
+                    Item item = itemService.findById(itemId);
+                    documentInfo.setItem(item);
+                }
+
+                return documentInfoRepo.save(documentInfo);
+            });
+        }
+
+
+
+    }*/
+
 }
