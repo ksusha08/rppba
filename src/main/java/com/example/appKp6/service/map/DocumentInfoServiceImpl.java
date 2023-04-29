@@ -47,13 +47,15 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
         return documentInfoRepo.save(documentInfo);
     }
 
-    public void saveDocInfo(DocumentInfo documentInfo) {
+    public void saveDocInfo(DocumentInfo documentInfo,Long idDoc,Long idItem) {
 
-        Document doc = documentInfo.getDocument();
+        Document doc = documentService.findById(idDoc);
+        documentInfo.setDocument(doc);
 
-        Item item = documentInfo.getItem();
+        Item item = itemService.findById(idItem);
+        documentInfo.setItem(item);
+
         Long id = item.getId();
-
         int newNumber = item.getNumber() - documentInfo.getAmount();
         item.setNumber(newNumber);
         itemService.update(item,id);
@@ -61,8 +63,8 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
         documentInfoRepo.save(documentInfo);
 
         List<DocumentInfo> documentInfoList = findByDocumentId(doc.getId());
-        documentService.updateSummAndAmount(doc, doc.getId(), documentInfoList);
 
+        documentService.updateSummAndAmount(doc, doc.getId(), documentInfoList);
     }
 
     @Override
@@ -118,29 +120,36 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
         return documentInfoRepo.findByDocumentId(documentId);
     }
 
-   /* public void reUpdatePrices(Long docId){
+    public void reUpdatePrices(Long docId){
+
+        Document doc = documentService.findById(docId);
+        Double newCoefficient = doc.getCoefficient();
 
         List<DocumentInfo> documentInfoList = findByDocumentId(docId);
 
         for(int i = 0; i<documentInfoList.size() ;i++) {
 
-            documentInfoRepo.findById(documentInfoList.get(i).getId()).map(documentInfo -> {
+            DocumentInfo docInfoToChange = documentInfoList.get(i);
 
-                documentInfo.setAmount(newDocumentInfo.getAmount());
-                documentInfo.setItem(newDocumentInfo.getItem());
-                documentInfo.setSumm(newDocumentInfo.getSumm());
+            documentInfoRepo.findById(docInfoToChange.getId()).map(documentInfo -> {
 
-                if (itemId != null) {
-                    Item item = itemService.findById(itemId);
-                    documentInfo.setItem(item);
-                }
+                Item item = docInfoToChange.getItem();
+                Double discountItemPrice = item.getDiscountPrice();
+
+                Double newCoefficientPrice = discountItemPrice*newCoefficient;
+
+                documentInfo.setCoefficient_price(newCoefficientPrice);
+                documentInfo.setSumm(docInfoToChange.getAmount()*newCoefficientPrice);
+
 
                 return documentInfoRepo.save(documentInfo);
             });
         }
+        documentInfoList = findByDocumentId(docId);
+
+        documentService.updateSummAndAmount(doc,docId,documentInfoList);
+    }
 
 
-
-    }*/
 
 }

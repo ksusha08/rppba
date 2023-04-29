@@ -4,6 +4,7 @@ package com.example.appKp6.controller;
 import com.example.appKp6.entity.Document;
 import com.example.appKp6.entity.Supplier;
 import com.example.appKp6.entity.User;
+import com.example.appKp6.service.map.DocumentInfoServiceImpl;
 import com.example.appKp6.service.map.DocumentServiceImpl;
 import com.example.appKp6.service.map.SupplierServiceImpl;
 import com.example.appKp6.service.map.UserServiceImpl;
@@ -20,14 +21,18 @@ public class DocumentController {
     private final DocumentServiceImpl documentService;
 
     @Autowired
+    private final DocumentInfoServiceImpl documentInfoService;
+
+    @Autowired
     private final UserServiceImpl userService;
 
     @Autowired
     private final SupplierServiceImpl supplierService;
 
-    public DocumentController(DocumentServiceImpl documentService, UserServiceImpl userService, SupplierServiceImpl supplierService) {
+    public DocumentController(DocumentServiceImpl documentService, DocumentInfoServiceImpl documentInfoService, UserServiceImpl userService, SupplierServiceImpl supplierService) {
 
         this.documentService = documentService;
+        this.documentInfoService = documentInfoService;
         this.userService = userService;
         this.supplierService = supplierService;
     }
@@ -58,7 +63,10 @@ public class DocumentController {
     @PutMapping("/document/{id}/{supplierId}")
     Document updateDocument(@RequestBody Document newDocument,@PathVariable Long id,@PathVariable(required = false) Long supplierId){
 
-        return documentService.update(newDocument,id,supplierId);
+        Document updatedDocument = documentService.update(newDocument,id,supplierId);
+        documentInfoService.reUpdatePrices(id);
+
+        return updatedDocument;
     }
 
 
