@@ -23,9 +23,6 @@ public class Item {
     @Column(name = "vendore_code", length = 255)
     private String vendoreCode;
 
-    @Column(name = "description", length = 255)
-    private String description;
-
     @Column(name = "discount_price")
     private Double discountPrice;
 
@@ -34,6 +31,10 @@ public class Item {
 
     @Column(name = "number", length = 64)
     private int number;
+
+    @ManyToOne
+    @JoinColumn(name = "id_category")
+    private Category category;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     private Set<DocumentInfo> documentInfo = new HashSet<>();
@@ -46,11 +47,10 @@ public class Item {
     }
 
 
-    public Item(Long id, String name, String vendoreCode, String description, Double discountPrice, String photos, int number) {
+    public Item(Long id, String name, String vendoreCode,  Double discountPrice, String photos, int number) {
         this.id = id;
         this.name = name;
         this.vendoreCode = vendoreCode;
-        this.description = description;
         this.discountPrice = discountPrice;
         this.photos = photos;
         this.number = number;
@@ -95,14 +95,6 @@ public class Item {
         this.vendoreCode = vendoreCode;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Double getDiscountPrice() {
         return discountPrice;
     }
@@ -117,5 +109,13 @@ public class Item {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

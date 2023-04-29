@@ -1,11 +1,10 @@
 package com.example.appKp6.controller;
 
+import com.example.appKp6.entity.Category;
 import com.example.appKp6.entity.Item;
-import com.example.appKp6.exception.SupplierNotFoundException;
-import com.example.appKp6.repo.ItemRepo;
+import com.example.appKp6.service.map.CategoryServiceImpl;
 import com.example.appKp6.service.map.FileUploadUtil;
 import com.example.appKp6.service.map.ItemServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,15 +17,22 @@ import java.util.List;
 public class ItemController {
 
     private final ItemServiceImpl itemService;
+    private final CategoryServiceImpl categoryService;
 
-    public ItemController(ItemServiceImpl itemService) {
+    public ItemController(ItemServiceImpl itemService, CategoryServiceImpl categoryService) {
         this.itemService = itemService;
+        this.categoryService = categoryService;
     }
 
 
-    @PostMapping(value = "/item", consumes = { "multipart/form-data" })
-    public Item newItem(@RequestPart("photos") MultipartFile file,
+    @PostMapping(value = "/item/{categoryId}", consumes = { "multipart/form-data" })
+    public Item newItem(@PathVariable Long categoryId,
+                        @RequestPart("photos") MultipartFile file,
                         @RequestPart("item") Item item) throws IOException {
+
+        Category category = categoryService.findById(categoryId);
+        item.setCategory(category);
+
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         item.setPhotos(fileName);

@@ -52,7 +52,6 @@ public class ItemServiceImpl implements ItemService {
         return itemRepo.findById(id).map(item -> {
             item.setName(newItem.getName());
             item.setVendoreCode(newItem.getVendoreCode());
-            item.setDescription(newItem.getDescription());
             item.setDiscountPrice(newItem.getDiscountPrice());
             item.setNumber(newItem.getNumber());
             item.setPhotos(newItem.getPhotos());
