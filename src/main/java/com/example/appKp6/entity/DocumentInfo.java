@@ -12,7 +12,7 @@ public class DocumentInfo {
     private Long id;
 
     @Column(name = "amount")
-    private int amount;
+    private Integer amount;
 
     @Column(name = "summ")
     private Double summ;
@@ -30,7 +30,7 @@ public class DocumentInfo {
 
     public DocumentInfo(){}
 
-    public DocumentInfo(Long id, int amount, Double summ, Double coefficient_price, Document document, Item item) {
+    public DocumentInfo(Long id, Integer amount, Double summ, Double coefficient_price, Document document, Item item) {
         this.id = id;
         this.amount = amount;
         this.summ = summ;
@@ -47,11 +47,11 @@ public class DocumentInfo {
         this.id = id;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 

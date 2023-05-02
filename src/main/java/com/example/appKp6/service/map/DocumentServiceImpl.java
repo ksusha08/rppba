@@ -9,6 +9,7 @@ import com.example.appKp6.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -111,4 +112,13 @@ public class DocumentServiceImpl implements DocumentService {
         }).orElseThrow(()->new DocumentNotFoundException(id));
     }
 
+    public List<Document> findByNumber(String number) {
+        List<Document> documents = documentRepo.findByNumberContainingIgnoreCase(number);
+        return documents;
+    }
+
+    public List<Document> findByDateBetween(Date start, Date end) {
+        List<Document> documents = documentRepo.findByDateGreaterThanEqualAndDateLessThanEqual(start,end);
+        return documents;
+    }
 }

@@ -11,6 +11,7 @@ import com.example.appKp6.service.map.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -58,6 +59,19 @@ public class DocumentController {
     @GetMapping("/document/{id}")
     Document getDocumentById(@PathVariable Long id){
         return documentService.findById(id);
+    }
+
+    @GetMapping("/search_document/{number}")
+    List<Document> getDocumentsByNumber(@PathVariable String number){
+
+        return documentService.findByNumber(number);
+    }
+
+    @GetMapping("/filter_document/{start}/{end}")
+    List<Document> getDocumentsByDate(@PathVariable Date start,
+                                      @PathVariable Date end){
+
+        return documentService.findByDateBetween(start,end);
     }
 
     @PutMapping("/document/{id}/{supplierId}")

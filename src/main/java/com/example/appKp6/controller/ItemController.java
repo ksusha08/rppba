@@ -1,6 +1,7 @@
 package com.example.appKp6.controller;
 
 import com.example.appKp6.entity.Category;
+import com.example.appKp6.entity.Document;
 import com.example.appKp6.entity.Item;
 import com.example.appKp6.service.map.CategoryServiceImpl;
 import com.example.appKp6.service.map.FileUploadUtil;
@@ -54,6 +55,11 @@ public class ItemController {
     @GetMapping("/item/{id}")
     Item getItemById(@PathVariable Long id){
         return itemService.findById(id);
+    }
+
+    @GetMapping("/search_items/{name}")
+    List<Item> getItemsByName(@PathVariable String name){
+        return itemService.findByName(name);
     }
 
     @PutMapping(value = "/item/{id}", consumes = { "multipart/form-data" })

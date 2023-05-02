@@ -1,5 +1,6 @@
 package com.example.appKp6.service.map;
 
+import com.example.appKp6.entity.Document;
 import com.example.appKp6.entity.Item;
 import com.example.appKp6.exception.ItemNotFoundException;
 import com.example.appKp6.exception.SupplierNotFoundException;
@@ -58,5 +59,10 @@ public class ItemServiceImpl implements ItemService {
 
             return itemRepo.save(item);
         }).orElseThrow(()->new ItemNotFoundException(id));
+    }
+
+    public List<Item> findByName(String name) {
+        List<Item> items = itemRepo.findByNameContainingIgnoreCase(name);
+        return items;
     }
 }

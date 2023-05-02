@@ -1,5 +1,7 @@
 package com.example.appKp6.service.map;
 
+import com.example.appKp6.dto.BalanceReport;
+import com.example.appKp6.dto.Report;
 import com.example.appKp6.entity.Document;
 import com.example.appKp6.entity.DocumentInfo;
 import com.example.appKp6.entity.Item;
@@ -8,7 +10,12 @@ import com.example.appKp6.repo.DocumentInfoRepo;
 import com.example.appKp6.service.DocumentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,7 +63,12 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
         documentInfo.setItem(item);
 
         Long id = item.getId();
-        int newNumber = item.getNumber() - documentInfo.getAmount();
+        int newNumber = 0;
+        if(doc.getType().equals("приход")){
+            newNumber = item.getNumber() + documentInfo.getAmount();
+        }else{
+            newNumber = item.getNumber() - documentInfo.getAmount();
+        }
         item.setNumber(newNumber);
         itemService.update(item,id);
 
@@ -118,6 +130,43 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
 
     public List<DocumentInfo> findByDocumentId(Long documentId) {
         return documentInfoRepo.findByDocumentId(documentId);
+    }
+
+    public List<Report> findDocInfoForReports(Date start, Date end) {
+        List<Object[]> data = documentInfoRepo.findDocumentInfoForReports(start, end);
+        List<Report> result = new ArrayList<>();
+
+        for (Object[] obj : data) {
+            Report info = new Report();
+            info.setIdinfo((Long) obj[0]);
+            info.setDocument((Document) obj[1]);
+            info.setItem((Item) obj[2]);
+            info.setAmount((Long) obj[3]);
+            info.setSumm((Double) obj[4]);
+            result.add(info);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = false)
+    public List<BalanceReport> generateBalanceReport(Date start, Date end) {
+        List<Object[]> data = documentInfoRepo.report(start, end);
+        List<BalanceReport> result = new ArrayList<>();
+
+        for (Object[] obj : data) {
+            BalanceReport info = new BalanceReport();
+
+
+            info.setIdinfo((String) obj[0]);
+            info.setIncomeAmount((BigDecimal) obj[1]);
+            info.setExpenseAmount((BigDecimal) obj[2]);
+            info.setNumber((int) obj[3]);
+
+            result.add(info);
+        }
+
+        return result;
     }
 
     public void reUpdatePrices(Long docId){

@@ -15,7 +15,7 @@ public class Document {
     private Long id;
 
     @Column(name = "number")
-    private int number;
+    private String number;
 
     @Column(name = "date")
     private Date date;
@@ -55,7 +55,7 @@ public class Document {
 
     }
 
-    public Document(Long id, int number, Date date, String status, String type, double coefficient, User user, Supplier supplier) {
+    public Document(Long id, String number, Date date, String status, String type, double coefficient, User user, Supplier supplier) {
         this.id = id;
         this.number = number;
         this.date = date;
@@ -90,11 +90,11 @@ public class Document {
         this.id = id;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
