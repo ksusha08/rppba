@@ -62,8 +62,9 @@ public class ItemController {
         return itemService.findByName(name);
     }
 
-    @PutMapping(value = "/item/{id}", consumes = { "multipart/form-data" })
+    @PutMapping(value = "/item/{id}/{categoryId}", consumes = { "multipart/form-data" })
     public Item updateItem(@PathVariable Long id,
+                           @PathVariable(required = false)  Long categoryId,
                         @RequestPart(name = "photos", required = false) MultipartFile file,
                         @RequestPart("item") Item item) throws IOException {
 
@@ -75,7 +76,8 @@ public class ItemController {
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         }
 
-        Item updatedItem = itemService.update(item, id);
+
+        Item updatedItem = itemService.updateAll(item, id,categoryId);
 
         return updatedItem;
     }
