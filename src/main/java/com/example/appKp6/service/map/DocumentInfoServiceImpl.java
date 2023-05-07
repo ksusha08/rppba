@@ -75,7 +75,6 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
         documentInfoRepo.save(documentInfo);
 
         List<DocumentInfo> documentInfoList = findByDocumentId(doc.getId());
-
         documentService.updateSummAndAmount(doc, doc.getId(), documentInfoList);
     }
 
@@ -98,17 +97,26 @@ public class DocumentInfoServiceImpl implements DocumentInfoService {
 
         DocumentInfo documentInfo = findById(aLong);
 
+        Document doc = documentService.findById(documentInfo.getDocument().getId());
+
         Item item = documentInfo.getItem();
         Long id = item.getId();
 
-        int newNumber = item.getNumber() + documentInfo.getAmount();
+        int newNumber = 0;
+        if(doc.getType().equals("приход")){
+            newNumber = item.getNumber() - documentInfo.getAmount();
+        }else{
+            newNumber = item.getNumber() + documentInfo.getAmount();
+        }
         item.setNumber(newNumber);
 
         itemService.update(item,id);
 
 
-
         documentInfoRepo.deleteById(aLong);
+        List<DocumentInfo> newDocumentInfo = findByDocumentId(doc.getId());
+
+        documentService.updateSummAndAmount(doc, doc.getId(),newDocumentInfo);
     }
 
 
